@@ -1,0 +1,101 @@
+{
+  "schema_version": "2.0",
+  "model": {
+    "id": "model_air_preheater",
+    "version": 1,
+    "name": "空气预热器工艺计算（独立）",
+    "description": "在没有上游工艺计算结果时，直接用用户给出的烟气流量与空气流量执行空气预热器工艺计算程序。"
+  },
+  "parameters": {
+    "flue_gas_flow": {
+      "display_name": "烟气流量",
+      "description": "进入空气预热器烟气侧的烟气质量流量。单位 kg/h。用户也可能说烟气量、烟气侧流量。",
+      "type": "number",
+      "unit": "kg/h",
+      "required": true,
+      "input": {
+        "aliases": [
+          "烟气量",
+          "烟气侧流量",
+          "烟气质量流量"
+        ]
+      },
+      "validation": {
+        "minimum": 0,
+        "maximum": null
+      },
+      "missing": {
+        "policy": "error"
+      }
+    },
+    "air_flow": {
+      "display_name": "空气流量",
+      "description": "进入空气预热器空气侧的空气质量流量。单位 kg/h。用户也可能说空气量、空气侧流量。",
+      "type": "number",
+      "unit": "kg/h",
+      "required": true,
+      "input": {
+        "aliases": [
+          "空气量",
+          "空气侧流量",
+          "空气质量流量"
+        ]
+      },
+      "validation": {
+        "minimum": 0,
+        "maximum": null
+      },
+      "missing": {
+        "policy": "error"
+      }
+    }
+  },
+  "results": {},
+  "artifacts": {
+    "air_preheater": {
+      "type": "excel",
+      "template_ref": "air_preheater"
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "id": "air_preheater",
+        "type": "excel_calculation",
+        "artifact": "air_preheater",
+        "depends_on": []
+      }
+    ]
+  },
+  "handoffs": [],
+  "report": {
+    "title": "空气预热器工艺计算报告",
+    "file_name": "air_preheater_report.docx",
+    "sections": [
+      {
+        "kind": "parameters",
+        "title": "一、输入参数"
+      },
+      {
+        "kind": "summary",
+        "title": "二、说明"
+      }
+    ]
+  },
+  "examples": [
+    {
+      "title": "空气预热器独立计算",
+      "description": "直接给出烟气流量与空气流量",
+      "prompt": "烟气流量50036 kg/h，空气流量47082 kg/h，计算空气预热器。"
+    },
+    {
+      "title": "查看独立计算需要的参数",
+      "description": "不依赖上游节能减排计算",
+      "prompt": "单独算空气预热器需要我提供哪些数据？"
+    }
+  ],
+  "hints": [
+    "烟气流量 50036 kg/h",
+    "空气流量 47082 kg/h"
+  ]
+}

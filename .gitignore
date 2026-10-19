@@ -218,3 +218,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- AI-Excel project ---
+# runtime data: job database, generated reports, private workbook copies
+.runtime/
+# personal notes with credentials
+note.env
+# client (Party A) proprietary Excel workbooks and computed copies - never publish
+templates/*.xlsm
+templates/*.xlsx
+templates/*.xls
+templates/reports/
+downloads/
+# internal project documents (contract analysis, meeting evaluation)
+docs/
+packages/
+*.rar

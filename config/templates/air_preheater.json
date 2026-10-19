@@ -1,0 +1,16 @@
+{
+  "id": "air_preheater",
+  "template": "空气预热器工艺计算程序.xlsm",
+  "display_name": "空气预热器模型",
+  "inputs": {
+    "flue_gas_flow": {
+      "sheet": "空气预热器-H",
+      "cell": "AA14"
+    },
+    "air_flow": {
+      "sheet": "空气预热器-H",
+      "cell": "AO14"
+    }
+  },
+  "outputs": {}
+}

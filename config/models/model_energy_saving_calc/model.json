@@ -1,0 +1,183 @@
+{
+  "schema_version": "2.0",
+  "model": {
+    "id": "model_energy_saving_calc",
+    "version": 10,
+    "name": "空气预热器工艺计算",
+    "description": "根据热负荷、燃料气氢气含量和目标排烟温度执行工艺及空气预热器计算。"
+  },
+  "parameters": {
+    "heat_load": {
+      "display_name": "热负荷",
+      "description": "工艺计算所需的热负荷。用户也可能说热负载；例如‘热负荷为240MW’应提取数值240。单位MW。",
+      "type": "number",
+      "unit": "MW",
+      "required": true,
+      "input": {
+        "aliases": [
+          "热负荷",
+          "热负载",
+          "heat load"
+        ]
+      },
+      "validation": {
+        "minimum": null,
+        "maximum": null
+      },
+      "missing": {
+        "policy": "error"
+      }
+    },
+    "fuel_hydrogen_content": {
+      "display_name": "燃料气氢气含量",
+      "description": "燃料气组份中的氢气体积含量。百分数按百分点直接传入计算，例如15.3%对应数值15.3，不换算成0.153。",
+      "type": "number",
+      "unit": "%",
+      "required": false,
+      "input": {
+        "aliases": [
+          "氢气含量",
+          "燃料气氢气含量",
+          "氢含量",
+          "H2含量"
+        ]
+      },
+      "validation": {
+        "minimum": 0,
+        "maximum": 100
+      },
+      "missing": {
+        "policy": "template_default"
+      }
+    },
+    "target_exhaust_temperature": {
+      "display_name": "目标排烟温度",
+      "description": "空气预热器计算使用的目标排烟温度，单位摄氏度。",
+      "type": "number",
+      "unit": "°C",
+      "required": false,
+      "input": {
+        "aliases": [
+          "排烟温度",
+          "目标排烟温度",
+          "烟气出口温度"
+        ]
+      },
+      "validation": {
+        "minimum": null,
+        "maximum": null
+      },
+      "missing": {
+        "policy": "template_default"
+      }
+    },
+    "include_air_preheater": {
+      "display_name": "是否继续空气预热器计算",
+      "description": "完成节能减排计算后，是否继续执行空气预热器工艺计算。默认执行。用户明确表示“不用”“跳过”“不用做空气预热器”“只算节能减排”“只要第一本”时为 false。",
+      "type": "boolean",
+      "unit": null,
+      "required": false,
+      "input": {
+        "aliases": [
+          "要不要空气预热器",
+          "是否需要空气预热器"
+        ]
+      },
+      "validation": {
+        "minimum": null,
+        "maximum": null
+      },
+      "missing": {
+        "policy": "default",
+        "value": true
+      }
+    }
+  },
+  "results": {
+    "thermal_result": {
+      "display_name": "工艺计算结果",
+      "type": "number",
+      "required": true
+    },
+    "air_outlet_temperature": {
+      "display_name": "空气侧出口温度",
+      "type": "number",
+      "required": true,
+      "unit": "℃"
+    },
+    "flue_gas_flow": {
+      "display_name": "烟气流量",
+      "type": "number",
+      "required": true,
+      "unit": "kg/h"
+    },
+    "air_flow": {
+      "display_name": "空气流量",
+      "type": "number",
+      "required": true,
+      "unit": "kg/h"
+    }
+  },
+  "artifacts": {
+    "energy_saving_calc": {
+      "type": "excel",
+      "template_ref": "energy_saving_calc"
+    },
+    "air_preheater": {
+      "type": "excel",
+      "template_ref": "air_preheater"
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "id": "energy_saving_calc",
+        "type": "excel_calculation",
+        "artifact": "energy_saving_calc",
+        "depends_on": []
+      },
+      {
+        "id": "air_preheater",
+        "type": "excel_calculation",
+        "artifact": "air_preheater",
+        "depends_on": [
+          "energy_saving_calc"
+        ],
+        "when": {
+          "parameter": "include_air_preheater",
+          "equals": true
+        }
+      }
+    ]
+  },
+  "handoffs": [
+    {
+      "source": "energy_saving_calc.flue_gas_flow",
+      "target": "air_preheater.flue_gas_flow"
+    },
+    {
+      "source": "energy_saving_calc.air_flow",
+      "target": "air_preheater.air_flow"
+    }
+  ],
+  "examples": [
+    {
+      "title": "空气预热器工艺计算",
+      "description": "填写热负荷、氢气含量和目标排烟温度",
+      "prompt": "热负荷为200MW，燃料气组份中氢气含量15.3%，目标排烟温度85摄氏度。"
+    },
+    {
+      "title": "查看所需计算参数",
+      "description": "先了解模型输入，再补充条件",
+      "prompt": "我想调整热负荷，请告诉我当前计算需要哪些参数。"
+    }
+  ],
+  "hints": [
+    "热负荷 200 MW",
+    "氢气含量 15.3%",
+    "排烟温度 85°C"
+  ],
+  "report": {
+    "title": "节能减排与空气预热器工艺计算报告"
+  }
+}

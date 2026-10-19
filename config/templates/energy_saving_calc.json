@@ -1,0 +1,37 @@
+{
+  "id": "energy_saving_calc",
+  "template": "节能减排计算.xlsm",
+  "display_name": "工艺计算模型",
+  "inputs": {
+    "heat_load": {
+      "sheet": "工艺计算",
+      "cell": "B11"
+    },
+    "fuel_hydrogen_content": {
+      "sheet": "工艺计算",
+      "cell": "T11"
+    },
+    "target_exhaust_temperature": {
+      "sheet": "预热器计算",
+      "cell": "G74"
+    }
+  },
+  "outputs": {
+    "air_outlet_temperature": {
+      "sheet": "预热器计算",
+      "cell": "K63"
+    },
+    "flue_gas_flow": {
+      "sheet": "预热器计算",
+      "cell": "S63"
+    },
+    "air_flow": {
+      "sheet": "预热器计算",
+      "cell": "U63"
+    },
+    "thermal_result": {
+      "sheet": "工艺计算",
+      "cell": "B22"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>Excel 智能计算助手</title>
+  <link rel="stylesheet" href="/static/chat.css?v=9">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <span class="brand-name">Formwise</span>
+        <button class="icon-button sidebar-close" id="closeSidebar" aria-label="关闭侧栏">×</button>
+      </div>
+      <button class="new-chat-button" id="newChat"><span class="plus">＋</span> 新建计算</button>
+      <div class="sidebar-section-label">工作空间</div>
+      <button class="nav-item active"><span class="nav-icon grid-icon">▦</span> 智能计算 <span class="nav-chevron">⌄</span></button>
+      <div class="sidebar-section-label recent-label">最近对话</div>
+      <div class="recent-list" id="recentList"></div>
+      <div class="sidebar-spacer"></div>
+      <div class="privacy-note"><span class="lock-icon">◈</span><div><strong>本机安全运行</strong><small>计算由 Windows Excel 执行</small></div></div>
+      <div class="profile-row"><div class="avatar small-avatar">U</div><div class="profile-copy"><strong>本地用户</strong><small>Excel 计算工作区</small></div><span class="online-dot"></span></div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="openSidebar" aria-label="打开侧栏">☰</button>
+        <div class="breadcrumb"><span>工作空间</span><span class="crumb-separator">/</span><strong>智能计算</strong></div>
+        <div class="topbar-right"><span class="engine-status"><i></i> Windows Excel 模式</span><button class="help-button" id="helpButton" title="关于此助手">?</button></div>
+      </header>
+
+      <section class="chat-layout" id="chatLayout">
+        <div class="chat-column">
+          <div class="conversation" id="conversation" aria-live="polite">
+            <div class="welcome" id="welcome">
+              <div class="welcome-orb"><div class="orb-core">✳</div><span class="orb-ring ring-one"></span><span class="orb-ring ring-two"></span></div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> EXCEL CALCULATION ASSISTANT <span class="eyebrow-line"></span></div>
+              <h1>把计算交给我，<br><span>从一句话开始。</span></h1>
+              <p class="welcome-description">描述计算条件，我会整理参数供你确认，再调用计算引擎完成计算并生成报告。</p>
+              <div class="suggestion-grid" id="suggestionGrid"></div>
+              <div class="example-caption" id="exampleCaption">试试这样描述</div>
+              <div class="example-chips" id="exampleChips"></div>
+            </div>
+            <div class="message-list" id="messageList"></div>
+            <div class="typing-row hidden" id="typingRow"><div class="avatar ai-avatar">✳</div><div class="typing-bubble"><span></span><span></span><span></span><em>正在分析参数…</em></div></div>
+          </div>
+
+          <div class="composer-wrap">
+            <form class="composer" id="composer">
+              <textarea id="messageInput" rows="1" maxlength="10000" placeholder="描述你的计算条件…"></textarea>
+              <div class="composer-toolbar"><div class="composer-hint"><span class="sparkle">✦</span> AI 将提取参数，并在计算前请你确认</div><button class="send-button" id="sendButton" type="submit" aria-label="发送"><span>发送</span><b>↑</b></button></div>
+            </form>
+            <div class="disclaimer">AI 提取结果请先核对；最终数值以 Microsoft Excel 实际计算结果为准。</div>
+          </div>
+        </div>
+
+        <aside class="context-panel" id="contextPanel">
+          <div class="context-label">计算流程</div>
+          <div class="flow-list" id="workflowSteps"></div>
+          <div class="context-divider lower-divider"></div>
+          <div class="context-label">输入参数</div>
+          <div class="parameter-list" id="activeParameters"></div>
+          <div class="context-footer"><span class="secure-icon">♢</span> 可编辑 Excel 仅保存在后台，用户下载 PDF</div>
+        </aside>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="modal-backdrop hidden" id="helpModal"><div class="help-modal"><button class="icon-button modal-close" id="closeHelp">×</button><div class="modal-icon">✳</div><h2>关于智能计算</h2><p>助手会从自然语言中识别业务参数。确认前不会运行计算。确认后，Windows Worker 按登记的模板串行计算，并生成结果文件和 Word 报告。</p><div class="modal-warning">请在已登录的 Windows 桌面会话中运行 Excel Worker。提交计算前请核对参数和单位。</div><button class="primary-button" id="gotIt">知道了</button></div></div>
+  <script src="/static/chat.js?v=9" defer></script>
+</body>
+</html>
